@@ -1,5 +1,6 @@
 package pl.movie.registration.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,17 +17,12 @@ import pl.movie.registration.service.impl.CustomLogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final AuthenticationSuccessHandler customSuccessHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
-
-    public SecurityConfig(UserDetailsService userDetailsService, AuthenticationSuccessHandler customSuccessHandler, CustomLogoutSuccessHandler customLogoutSuccessHandler) {
-        this.userDetailsService = userDetailsService;
-        this.customSuccessHandler = customSuccessHandler;
-        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
-    }
 
     @Bean
     public DaoAuthenticationProvider authProvider() {
@@ -56,10 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/register", "/home","/h2-console/**")
                 .permitAll()
                 .antMatchers("/**").hasAnyAuthority("ROLE_ADMIN")
-                .antMatchers("/home").hasAnyRole("USER", "ADMIN")
+                //.antMatchers("/home").hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .defaultSuccessUrl("/home")
                 .usernameParameter("email")
                 .successHandler(customSuccessHandler)
                 .failureUrl("/login?error=true")

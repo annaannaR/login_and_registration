@@ -6,21 +6,39 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.movie.registration.dto.UserData;
 import pl.movie.registration.exception.UserAlreadyExistException;
+import pl.movie.registration.model.Role;
 import pl.movie.registration.model.User;
+import pl.movie.registration.repository.RoleRepository;
 import pl.movie.registration.repository.UserRepository;
+import pl.movie.registration.service.RoleService;
 import pl.movie.registration.service.UserService;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleService roleService;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public User save(UserData userData) {
         User user = populateUserData(userData);
+
+        Role role = roleService.findByName("USER");
+        List<Role> roleSet = new ArrayList<>();
+        roleSet.add(role);
+
+//TODO sprawdzić poprawność funkcji
+//        if(user.getEmail().split("@")[1].equals("admin")){
+//            role = roleService.findByName("ADMIN");
+//            roleSet.add(role);
+//        }
+        user.setRoles(roleSet);
+
         return userRepository.save(user);
     }
 
@@ -42,6 +60,10 @@ public class UserServiceImpl implements UserService {
 
         User userEntity = new User();
         BeanUtils.copyProperties(userData, userEntity);
+
+        Role userRole = roleService.findByName("USER");
+        userEntity.setRoles(Collections.singletonList(userRole));
+
         encodePassword(userEntity, userData);
         userRepository.save(userEntity);
     }
