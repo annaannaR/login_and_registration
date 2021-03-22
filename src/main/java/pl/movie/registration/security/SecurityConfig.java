@@ -52,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/register", "/home","/h2-console/**")
                 .permitAll()
                 .antMatchers("/**").hasAnyAuthority("ROLE_ADMIN")
-                //.antMatchers("/home").hasAnyRole("USER", "ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -68,8 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .permitAll()
                 .and()
-//                        .logoutSuccessUrl("/home")
-//                        .deleteCookies(cookieNamesToClear)
                 .headers().frameOptions().disable();
     }
 

@@ -1,6 +1,7 @@
 package pl.movie.registration.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,12 +13,12 @@ import pl.movie.registration.service.UserService;
 
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class RegistrationController {
 
     private final UserService userService;
-
 
     @GetMapping("/register")
     public String register(final Model model) {

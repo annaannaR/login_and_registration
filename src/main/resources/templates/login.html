@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,6 +40,15 @@
         input:hover,
         .btn:hover {
             opacity: 1;
+        }
+
+        .alert{
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px 3px 3px 3px;
+            color: #D8000C;
+            background-color: #FFBABA;
+
         }
 
         /* style the submit button */
@@ -133,11 +143,18 @@
 <body>
 <div class="container">
 
+
     <form th:action="@{/login}" method="post">
+
         <div class="row">
+
             <h2 style="text-align:center">Login und Registration Page</h2>
             <div class="vl">
                 <span class="vl-innertext">or</span>
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid username and password.
             </div>
             <div class="col">
                 <input type="text" name="email" placeholder="Username (e-mail)" required>

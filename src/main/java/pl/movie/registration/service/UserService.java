@@ -7,7 +7,7 @@ import pl.movie.registration.model.User;
 public interface UserService {
     User save(UserData userData);
 
-    void register(UserData user) throws UserAlreadyExistException;
+    void register(UserData userData) throws UserAlreadyExistException;
 
     boolean checkIfUserExist(String email);
 
